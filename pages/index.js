@@ -16,6 +16,7 @@ export const App = () => {
   const [cityInput, setCityInput] = useState("Riga");
   const [triggerFetch, setTriggerFetch] = useState(true);
   const [weatherData, setWeatherData] = useState();
+  console.log(weatherData);
   const [unitSystem, setUnitSystem] = useState("metric");
 
   useEffect(() => {
@@ -40,10 +41,10 @@ export const App = () => {
   return weatherData && !weatherData.message ? (
     <div className={styles.wrapper}>
       <MainCard
-        city={weatherData.name}
-        country={weatherData.sys.country}
-        description={weatherData.weather[0].description}
-        iconName={weatherData.weather[0].icon}
+        // city={weatherData.name}
+        // country={weatherData.sys.country}
+        // description={weatherData.weather[0].description}
+        // iconName={weatherData.weather[0].icon}
         unitSystem={unitSystem}
         weatherData={weatherData}
       />

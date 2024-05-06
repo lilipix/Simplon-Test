@@ -14,19 +14,19 @@ export const MetricsBox = ({ weatherData, unitSystem }) => {
       <MetricsCard
         title={"Humidity"}
         iconSrc={"/icons/humidity.png"}
-        metric={weatherData.main.humidity}
+        metric={weatherData.relative_humidity_2m}
         unit={"%"}
       />
       <MetricsCard
         title={"Wind speed"}
         iconSrc={"/icons/wind.png"}
-        metric={getWindSpeed(unitSystem, weatherData.wind.speed)}
+        metric={getWindSpeed(unitSystem, weatherData.wind_speed_10m)}
         unit={unitSystem == "metric" ? "m/s" : "m/h"}
       />
       <MetricsCard
         title={"Wind direction"}
         iconSrc={"/icons/compass.png"}
-        metric={degToCompass(weatherData.wind.deg)}
+        metric={degToCompass(weatherData.wind_direction_10m)}
       />
       <MetricsCard
         title={"Visibility"}
