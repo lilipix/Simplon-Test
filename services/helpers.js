@@ -10,17 +10,17 @@ export const getWindSpeed = (unitSystem, windInMps) =>
 
 export const getVisibility = (unitSystem, visibilityInMeters) =>
   unitSystem == "metric"
-    ? (visibilityInMeters / 1000).toFixed(1)
-    : kmToMiles(visibilityInMeters / 1000);
+    // ? (visibilityInMeters / 1000).toFixed(1)
+    // : kmToMiles(visibilityInMeters / 1000);
 
-export const getTime = (unitSystem, currentTime, timezone) =>
+export const getTime = (unitSystem, currentTime) =>
   unitSystem == "metric"
-    ? unixToLocalTime(currentTime, timezone)
-    : timeTo12HourFormat(unixToLocalTime(currentTime, timezone));
+    ? unixToLocalTime(currentTime)
+    : timeTo12HourFormat(unixToLocalTime(currentTime));
 
-export const getAMPM = (unitSystem, currentTime, timezone) =>
+export const getAMPM = (unitSystem, currentTime) =>
   unitSystem === "imperial"
-    ? unixToLocalTime(currentTime, timezone).split(":")[0] >= 12
+    ? unixToLocalTime(currentTime).split(":")[0] >= 12
       ? "PM"
       : "AM"
     : "";
@@ -36,6 +36,6 @@ export const getWeekDay = (weatherData) => {
     "Saturday",
   ];
   return weekday[
-    new Date((weatherData.dt + weatherData.timezone) * 1000).getUTCDay()
+    new Date((weatherData.current.time ) * 1000).getUTCDay()
   ];
 };
