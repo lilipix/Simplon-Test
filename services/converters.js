@@ -68,14 +68,9 @@ export const degToCompass = (num) => {
 
 export const unixToLocalTime = (unixSeconds) => {
 
-  const date = new Date(unixSeconds * 1000); 
-  const hours = date.getHours().toString().padStart(2, '0'); 
-  const minutes = date.getMinutes().toString().padStart(2, '0'); 
+  let time = new Date(unixSeconds * 1000)
+  const hours = time.getHours().toString().padStart(2, '0'); 
+  const minutes = time.getMinutes().toString().padStart(2, '0'); 
   return `${hours}:${minutes}`;
-
-  // let time = new Date(unixSeconds * 1000)
-  //   .toISOString()
-  //   .match(/(\d{2}:\d{2})/)[0];
-
-  // return time.startsWith("0") ? time.substring(1) : time;
+  
 };

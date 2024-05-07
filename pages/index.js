@@ -4,7 +4,6 @@ import { MainCard } from "../components/MainCard";
 import { ContentBox } from "../components/ContentBox";
 import { Header } from "../components/Header";
 import { DateAndTime } from "../components/DateAndTime";
-import { Search } from "../components/Search";
 import { MetricsBox } from "../components/MetricsBox";
 import { UnitSwitch } from "../components/UnitSwitch";
 import { LoadingScreen } from "../components/LoadingScreen";
@@ -43,7 +42,7 @@ export const App = () => {
       ? setUnitSystem("imperial")
       : setUnitSystem("metric");
 
-  return weatherData && !weatherData.message ? (
+  return weatherData ? (
     <div className={styles.wrapper}>
       <MainCard
         city={cityWeatherConfig.city}
@@ -61,14 +60,6 @@ export const App = () => {
         <UnitSwitch onClick={changeSystem} unitSystem={unitSystem} />
       </ContentBox>
     </div>
-  ) : weatherData && weatherData.message ? (
-    <ErrorScreen errorMessage="City not found, try again!">
-      <Search
-        onFocus={(e) => (e.target.value = "")}
-        onChange={(e) => setCityInput(e.target.value)}
-        onKeyDown={(e) => e.keyCode === 13 && setTriggerFetch(!triggerFetch)}
-      />
-    </ErrorScreen>
   ) : (
     <LoadingScreen loadingMessage="Loading data..." />
   );
