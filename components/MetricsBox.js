@@ -1,14 +1,15 @@
-import { degToCompass } from "../services/converters";
+import { degToCompass, unixToLocalTime } from "../services/converters";
 import {
   getTime,
   getAMPM,
-  getVisibility,
   getWindSpeed,
+  getVisibilityData,
 } from "../services/helpers";
 import { MetricsCard } from "./MetricsCard";
 import styles from "./MetricsBox.module.css";
 
 export const MetricsBox = ({ weatherData, unitSystem }) => {
+  const visibilityData = getVisibilityData(unitSystem, weatherData.hourly.time, weatherData.hourly.visibility);
   return (
     <div className={styles.wrapper}>
       <MetricsCard
@@ -31,7 +32,7 @@ export const MetricsBox = ({ weatherData, unitSystem }) => {
       <MetricsCard
         title={"Visibility"}
         iconSrc={"/icons/binocular.png"}
-        metric={getVisibility(unitSystem, weatherData.visibility)}
+        metric={visibilityData.convertedVisibility}
         unit={unitSystem == "metric" ? "km" : "miles"}
       />
       <MetricsCard

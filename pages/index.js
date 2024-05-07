@@ -9,29 +9,34 @@ import { MetricsBox } from "../components/MetricsBox";
 import { UnitSwitch } from "../components/UnitSwitch";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ErrorScreen } from "../components/ErrorScreen";
+import cityWeatherConfig from "../public/cityWeatherConfig.json";
 
 import styles from "../styles/Home.module.css";
 
 export const App = () => {
-  const [cityInput, setCityInput] = useState("Riga");
   const [triggerFetch, setTriggerFetch] = useState(true);
   const [weatherData, setWeatherData] = useState();
   console.log(weatherData);
   const [unitSystem, setUnitSystem] = useState("metric");
 
   useEffect(() => {
-    const getData = async () => {
-      const res = await fetch("api/data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cityInput }),
-      });
+    const fetchData = async () => {
+      try{
+      const res = await fetch("api/data");
       const data = await res.json();
       setWeatherData({ ...data });
-      setCityInput("");
-    };
-    getData();
-  }, [triggerFetch]);
+    } catch (error) {
+      console.error("Erreur dans la récupération des données météorologiques",error);
+    }
+  };
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 3600000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const changeSystem = () =>
     unitSystem == "metric"
@@ -41,29 +46,16 @@ export const App = () => {
   return weatherData && !weatherData.message ? (
     <div className={styles.wrapper}>
       <MainCard
-        // city={weatherData.name}
-        // country={weatherData.sys.country}
-        // description={weatherData.weather[0].description}
-        // iconName={weatherData.weather[0].icon}
+        city={cityWeatherConfig.city}
+        country={cityWeatherConfig.country}
+        description={weatherData.current.weather_code}
+        iconName={weatherData.current.weather_code}
         unitSystem={unitSystem}
         weatherData={weatherData}
       />
       <ContentBox>
         <Header>
           <DateAndTime weatherData={weatherData} unitSystem={unitSystem} />
-          <Search
-            placeHolder="Search a city..."
-            value={cityInput}
-            onFocus={(e) => {
-              e.target.value = "";
-              e.target.placeholder = "";
-            }}
-            onChange={(e) => setCityInput(e.target.value)}
-            onKeyDown={(e) => {
-              e.keyCode === 13 && setTriggerFetch(!triggerFetch);
-              e.target.placeholder = "Search a city...";
-            }}
-          />
         </Header>
         <MetricsBox weatherData={weatherData} unitSystem={unitSystem} />
         <UnitSwitch onClick={changeSystem} unitSystem={unitSystem} />
